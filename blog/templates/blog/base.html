@@ -1,0 +1,843 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load pwa %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  {% block head %}
+  {% endblock head %}
+    <link rel="icon" href="{% static 'blog/img/favicon.png' %}"
+          type="image/gif" sizes="16x16">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block meta %}{% endblock %}
+    <link rel="manifest" href="/manifest.json">
+     
+    {% progressive_web_app_meta %}
+    
+
+    <style>
+
+.gg-add-r {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ width: 22px;
+ height: 22px;
+ border: 2px solid;
+ transform: scale(var(--ggs,1));
+ border-radius: 4px
+}
+
+.gg-add-r::after,
+.gg-add-r::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ width: 10px;
+ height: 2px;
+ background: currentColor;
+ border-radius: 5px;
+ top: 8px;
+ left: 4px
+}
+
+.gg-add-r::after {
+ width: 2px;
+ height: 10px;
+ top: 4px;
+ left: 8px
+} 
+
+.gg-smile-mouth-open {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ width: 20px;
+ height: 20px;
+ border: 2px solid;
+ border-radius: 100px
+}
+
+.gg-smile-mouth-open::after,
+.gg-smile-mouth-open::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ left: 4px
+}
+
+.gg-smile-mouth-open::before {
+ background: currentColor;
+ box-shadow: 6px 0 0;
+ width: 2px;
+ height: 2px;
+ border-radius: 50%;
+ top: 5px
+}
+
+.gg-smile-mouth-open::after {
+ width: 8px;
+ height: 4px;
+ border-radius: 150px;
+ border-top-left-radius: 0;
+ border-top-right-radius: 0;
+ border: 2px solid;
+ top: 9px
+} 
+
+.gg-profile,
+.gg-profile::after,
+.gg-profile::before {
+ display: block;
+ box-sizing: border-box;
+ border: 2px solid;
+ border-radius: 100px
+}
+
+.gg-profile {
+ overflow: hidden;
+ transform: scale(var(--ggs,1));
+ width: 22px;
+ height: 22px;
+ position: relative
+}
+
+.gg-profile::after,
+.gg-profile::before {
+ content: "";
+ position: absolute;
+ top: 2px;
+ left: 5px;
+ width: 8px;
+ height: 8px
+}
+
+.gg-profile::after {
+ border-radius: 200px;
+ top: 11px;
+ left: 0px;
+ width: 18px;
+ height: 18px
+} 
+
+ .gg-readme {
+ display: block;
+ position: relative;
+ box-sizing: border-box;
+ transform: scale(var(--ggs,1));
+ width: 2px;
+ height: 17px;
+ border-bottom: 4px solid;
+ border-radius: 4px
+}
+
+.gg-readme::after,
+.gg-readme::before {
+ content: "";
+ display: block;
+ position: absolute;
+ box-sizing: border-box;
+ width: 8px;
+ height: 12px;
+ box-shadow: 0 0 0 2px;
+ border-radius: 1px;
+ bottom: -1px;
+ background:
+ linear-gradient(to left,
+ currentColor 4px,transparent 0)
+ no-repeat center 5px/4px 2px,
+ linear-gradient(to left,
+ currentColor 4px,transparent 0)
+ no-repeat center 2px/4px 2px,
+ linear-gradient(to left,
+ currentColor 4px,transparent 0)
+ no-repeat center 8px/4px 2px
+}
+
+.gg-readme::before {
+ border-top-right-radius: 3px;
+ left: -8px
+}
+
+.gg-readme::after {
+ border-top-left-radius: 3px;
+ right: -8px
+} 
+
+
+
+ 
+
+.gg-search {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ width: 16px;
+ height: 16px;
+ border: 2px solid;
+ border-radius: 100%;
+ margin-left: -4px;
+ margin-top: -4px
+}
+
+.gg-search::after {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ border-radius: 3px;
+ width: 2px;
+ height: 8px;
+ background: currentColor;
+ transform: rotate(-45deg);
+ top: 10px;
+ left: 12px
+} 
+
+.gg-bell,
+.gg-bell::before {
+ border-top-left-radius: 100px;
+ border-top-right-radius: 100px
+}
+
+.gg-bell {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ border: 2px solid;
+ border-bottom: 0;
+ width: 14px;
+ height: 14px
+}
+
+.gg-bell::after,
+.gg-bell::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute
+}
+
+.gg-bell::before {
+ background: currentColor;
+ width: 4px;
+ height: 4px;
+ top: -4px;
+ left: 3px
+}
+
+.gg-bell::after {
+ border-radius: 3px;
+ width: 16px;
+ height: 10px;
+ border: 6px solid transparent;
+ border-top: 1px solid transparent;
+ box-shadow:
+ inset 0 0 0 4px,
+ 0 -2px 0 0;
+ top: 14px;
+ left: -3px;
+ border-bottom-left-radius: 100px;
+ border-bottom-right-radius: 100px
+} 
+
+.gg-awards {
+ display: block;
+ position: relative;
+ transform: scale(var(--ggs,1));
+ box-sizing: border-box;
+ width: 16px;
+ height: 20px;
+ border: 4px solid transparent;
+ border-top: 12px solid transparent;
+ border-bottom: 0;
+ box-shadow:
+ inset 4px 0 0 -2px,
+ inset -4px 0 0 -2px
+}
+
+.gg-awards::after,
+.gg-awards::before {
+ content: "";
+ box-sizing: border-box;
+ position: absolute;
+ display: block;
+ border: 2px solid
+}
+
+.gg-awards::before {
+ width: 14px;
+ height: 14px;
+ border-radius: 22px;
+ top: -12px;
+ left: -3px
+}
+
+.gg-awards::after {
+ width: 6px;
+ height: 6px;
+ border-right-color: transparent;
+ border-bottom-color: transparent;
+ border-bottom-left-radius: 1px;
+ border-top-right-radius: 1px;
+ transform: rotate(45deg);
+ bottom: -3px;
+ left: 1px
+} 
+
+       .gg-home {
+ background:
+ linear-gradient(to left,
+ currentColor 5px,transparent 0)
+ no-repeat 0 bottom/4px 2px,
+ linear-gradient(to left,
+ currentColor 5px,transparent 0)
+ no-repeat right bottom/4px 2px;
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ width: 18px;
+ height: 14px;
+ border: 2px solid;
+ border-top: 0;
+ border-bottom: 0;
+ border-top-right-radius: 3px;
+ border-top-left-radius: 3px;
+ border-bottom-right-radius: 0;
+ border-bottom-left-radius: 0;
+ margin-bottom: -2px
+ }
+
+ .gg-home::after,
+ .gg-home::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute
+ }
+
+ .gg-home::before {
+ border-top: 2px solid;
+ border-left: 2px solid;
+ border-top-left-radius: 4px;
+ transform: rotate(45deg);
+ top: -5px;
+ border-radius: 3px;
+ width: 14px;
+ height: 14px;
+ left: 0
+ }
+
+ .gg-home::after {
+ width: 8px;
+ height: 10px;
+ border: 2px solid;
+ border-radius: 100px;
+ border-bottom-left-radius: 0;
+ border-bottom-right-radius: 0;
+ border-bottom: 0;
+ left: 3px;
+ bottom: 0
+ } 
+
+
+
+  
+  
+  
+
+  
+ 
+
+  :root {
+  font-size: 14px;
+  --primaryColor: #1778F2;
+  --secondaryColor: #F7F7F7;
+  --tertierColor: #D3D3D3;
+  font-weight: 350;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+
+
+
+ul {
+  list-style: none;
+}
+
+
+
+/* .container {
+  margin: 0 1em;
+} */
+
+.top-header {
+  background-color: white;
+  /* padding-top: 1em; */
+  /* border-bottom: 1px solid var(--tertierColor); */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.top-header .row-1 .container {
+  justify-content: space-around;
+  place-items:center;
+  margin-bottom: 1em;
+}
+
+.top-header .row-1 .logo {
+  font-weight: bold;
+  font-size: 2rem;
+  font-family: 'Klavika Bold', sans-serif;
+  color: var(--primaryColor);
+}
+
+
+
+
+
+
+
+
+
+
+.top-header .row-2 nav ul {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  place-items: center;
+  justify-content: space-evenly;
+}
+
+
+
+
+
+.flex{
+  display: flex;
+}
+
+  
+      /* Dropdown Button */
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  max-width: 300px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: #3498DB;
+  margin-top: 10px;
+  /* padding: 12px 16px; */
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+
+
+a:is(:link,:active,:visited).active {
+  color: orange;
+  background-color: wheat;
+}
+
+#button{
+  display:block;
+  margin:20px auto;
+  padding:10px 30px;
+  background-color:#eee;
+  border:solid #ccc 1px;
+  cursor: pointer;
+}
+#overlay{	
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+.cv-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+.is-hide{
+  display:none;
+}
+     
+    </style>
+
+
+         
+    
+    {% block title %}{% endblock %}
+
+    
+</head>
+<body >
+
+  
+
+ 
+    <header class="top-header">
+      <div class="row-1">
+        
+        <div class="container flex">
+         
+          
+            <h2  class="logo">Worthygram</h2>
+          
+          {% if user.is_authenticated %}
+
+          
+
+          <div class="menus">
+            
+            <div class="dropdown">
+               
+                  
+              <button  onclick="myFunction()" class="dropbtn">...</button>
+            
+          
+          
+            <div id="myDropdown" class="dropdown-content">
+            
+             
+              <a href="{% url 'blog:certificates' %}">Certificates</a>
+              <a href="{% url 'blog:gratitude_or_note' %}">Gratitudes</a>
+              <a href="{% url 'community:sponsor' %}">Sponsor</a>
+              <a href="{% url 'community:guidelines' %}">Guidelines</a>
+              <a href="{% url 'community:about' %}">About</a>
+              <a href="{% url 'community:contact' %}">Contact Us</a>
+              <!-- <a href="{% url 'community:contribute' %}">Contribute</a> -->
+              <a href="{% url 'logout' %}">LogOut</a>
+             
+             
+          </div>
+          
+         
+            </div>
+           
+           
+          </div>
+          
+          <a id="button-4" aria-label="search" href="{% url 'blog:search' %}"><i class="gg-search"></i></a>
+
+
+         
+ 
+         
+
+         
+        </div>
+      </div>
+      <div class="row-2" >
+        <div class="container" >
+          <nav>
+            <ul>
+            
+              <!-- <li   > <a   aria-label="home"  href="{% url 'blog:home' %}"><img alt="home" height="20" alt="home" width="20" src="/media/svg/home.svg"> </a></li> -->
+              <li ><a id="button-1" aria-label="home"  href="{% url 'blog:home' %}" ><i class="gg-home" aria-hidden="true"></i></a></li>
+              <li><a id="button-3" aria-label="stories" href="{% url 'blog:stories' %}" ><i class="gg-readme" aria-hidden="true"></i></a></li>
+             
+              <li><a id="button-2" aria-label="worthy-prints" href="{% url 'blog:exercises' %}"><i class="gg-smile-mouth-open" aria-hidden="true"></i></a></li>
+              <li><a  aria-label="create-post"  href="{% url 'blog:post-create' %}"><i class="gg-add-r" aria-hidden="true"></i></a></li>
+              <li><a id="button-6" aria-label="gratitude-or-note" href="{% url 'blog:certificates' %}"><i class="gg-awards" aria-hidden="true"></i></a></li>
+              <li><a id="button-5" aria-label="profile" href="{% url 'profile' request.user.username  %}"><i class="gg-profile" aria-hidden="true"></i></a></li>
+      
+
+             
+            
+              
+            </ul>
+           
+            
+            
+            {% else %}
+            <a aria-label="login" class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a aria-label="register" class="nav-item nav-link" href="{% url 'register' %}">Register
+            </a>
+          {% endif %}
+          </nav>
+          <hr>
+        </div>
+      </div>
+    </header>
+
+    
+
+
+    <!-- <section class="home-section">
+        <div class="text">Dashboard</div>
+    </section> -->
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col-lg-4">
+          <!-- <div class="content-section-sidebar" id="facts-div">
+            <h3 class="sidebar-heading">Facts</h3>
+            
+          </div> -->
+          <!-- <div class="content-section-sidebar">
+            <h3 class="sidebar-heading">YouTube</h3>
+            <script src="https://apis.google.com/js/platform.js"></script>
+            <div class="g-ytsubscribe" data-channelid="UCnbda_vAZxb4H_zXa6Q2I6w" data-layout="full" data-count="default"></div>
+          </div> -->
+          <!-- <div class="content-section-sidebar">
+            <h3 class="sidebar-heading">Twitter</h3>
+            <a href="https://twitter.com/nccbuddy?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @ncc_buddies</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>             -->
+        </div>
+      </div>
+    </main>
+
+
+
+    <!-- <footer class="footer">
+      <a href="{% url 'community:about' %}">About</a>
+      <a href="{% url 'community:contact' %}">Contact</a>
+      <a href="{% url 'community:contribute' %}">Contribute</a>
+      <a href="{% url 'community:sponsor' %}">Sponsor</a>
+      <a href="{% url 'community:guidelines' %}">Guidelines</a>
+      <div class="tag-line">
+        <a href="">NCC BUDDY MADE WITH ❤️ IN INDIA</a>
+      </div>
+    </footer>
+     -->
+
+
+    
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+
+
+
+    
+
+
+
+    
+{% block script %}{% endblock %}
+
+
+    <script>
+
+    $(document).ready(function(){
+
+        $("form").attr("enctype","multipart/form-data");
+
+    });
+
+    </script> 
+
+
+
+<script>
+  function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
+<!-- <script>
+  var btnContainer = document.getElementById("navbar");
+  var btns = btnContainer.getElementsByClassName("btn");
+
+  for(var i=0; i<btns.length; i++){
+    btns[i].addEventListener('click',function(){
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active");
+      this.className += " active";
+    })
+  }
+</script> -->
+
+
+<script>
+  const active = window.location.pathname;
+const navLinks = document.querySelectorAll('nav a').forEach(link => {
+  if(link.href.includes(`${active}`)){
+    link.classList.add('active');
+    console.log(link);
+  }
+})
+</script>
+
+
+
+  <script>
+    jQuery(function($){
+  $(document).ajaxSend(function() {
+    $("#overlay").fadeIn(300);
+  });
+    
+  $('#button-2').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  }); 
+
+  $('#button-1').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  });
+  $('#button-3').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  });
+  $('#button-4').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  });
+  $('#button-5').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  });
+  $('#button-6').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  });
+});
+</script>
+
+
+
+
+</body>
+</html>

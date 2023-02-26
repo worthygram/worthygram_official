@@ -1,0 +1,321 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load embed_video_tags %}
+{% block title %}
+
+<title>worthy stories</title>
+{% endblock %}
+{% block head %}
+<meta
+  name="description"
+  content="Do different types of exercises such as sqauts,jumping jacks and have fun">
+{% endblock head %}
+{% load i18n %}
+{% block content %}
+
+<style>
+
+
+
+    .username {
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        font-size: 12px;
+        /* margin-top: 5px; */
+        color: rgba(0, 0, 0, 0.5)
+    }
+
+
+
+    .profile-pic {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+        padding: 3px;
+        background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+    }
+
+    .profile-pic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    }
+
+    .read-more {
+        float: right
+    }
+
+
+    .main {
+        width: 100%;
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .wrapper {
+        width: 75%;
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        grid-gap: 30px;
+    }
+
+    .left-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post {
+        width: 100%;
+        height: auto;
+        /* background: #fff; */
+        border: 1px solid #dfdfdf;
+        margin-top: 5px;
+    }
+
+    .info {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    .info .username {
+        width: auto;
+        font-weight: bold;
+        color: #000;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    .info .options {
+        height: 10px;
+        cursor: pointer;
+    }
+
+    .info .user {
+        display: flex;
+        align-items: center;
+    }
+
+    .info .profile-pic {
+        height: 40px;
+        width: 40px;
+        padding: 0;
+        border: none;
+    }
+
+    .info .profile-pic img {
+        border: none;
+    }
+
+    .post-image {
+        width: 100%;
+        height: 550px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        width: 100%;
+        /* padding: 20px; */
+        margin-top: 10px;
+    }
+
+    .likes {
+        font-weight: bold;
+    }
+
+    .description {
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .description span {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .post-time {
+        /* color: rgba(0, 0, 0, 0.5); */
+        font-size: 12px;
+    }
+
+    .reaction-wrapper {
+        width: 100px;
+        height: 50px;
+        display: flex;
+        margin-top: -20px;
+        align-items: center;
+    }
+
+    .reaction-wrapper .icon {
+        height: 25px;
+        margin: 0;
+        margin-right: 20px;
+    }
+
+    .reaction-wrapper .icon.save {
+        margin-left: auto;
+    }
+
+    .right-col {
+        padding: 20px;
+    }
+
+    @media (max-width:1100px) {
+        .search-box {
+            display: none;
+        }
+
+        .nav-wrapper,
+        .wrapper {
+            width: 95%;
+        }
+
+        .wrapper {
+            display: block;
+        }
+    }
+
+    @media (max-width:500px) {
+        .nav-items .icon {
+            margin: 0 5px;
+        }
+
+        .post-image {
+            height: 300px;
+        }
+    }
+</style>
+
+<div >
+
+    {% get_current_language as CURRENT_LANGUAGE %}
+    {% get_available_languages as AVAILABLE_LANGUAGES %}
+    {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+    <div class="languages">
+  </div>
+
+
+<section class="main" style="margin-top: 50px;">
+    <div class="wrapper">
+        <div class="infinite-container">
+          <div class="left-col infinite-item"  >
+            {% for exercise in exercises %}
+            <div class="post infinite-item" style="margin-top: 30px;" name="{{exercise.slug}}">
+                <div class="info">
+
+                    <div class="user">
+
+                        <div class="profile-pic">
+                            {% if exercise.author.profile.image %}
+                            <img src="{{exercise.author.profile.image.url}}" alt="{{exercise.title}}"></img>
+                            {% else %}
+                            <img src="/static/blog/img/logo.png" class="profile-pic" alt="profile">
+                            {% endif %}
+
+                        </div>
+
+                        <p class="username">{{ exercise.author }}</p>
+                        <ul class="languages" style="margin-left: 20px;">
+                            {% for language in languages %}
+                              <li lang="{{ language.code }}" style="display: inline; margin-left: 30px;">
+                               <button > <a href="/{{ language.code }}/exercises" style="color: #fff; background-color: #0f66f2;"
+                                {% if language.code == CURRENT_LANGUAGE %} class="active"{% endif %}>
+                                {{ language.code }}
+                              </a></button>
+                              </li>
+                            {% endfor %}
+                          </ul>
+
+                    </div>
+
+
+                </div>
+                
+                {% if exercise.image %}
+                <img src="{{exercise.image.url}}" class="post-image" alt="">
+                {% endif %}
+                {% if exercise.video %}
+                <video class="post-image" autoplay loop muted playsinline>
+                    <source src="{{exercise.video.url}}"  type="video/webm" />
+                  </video>
+                  {% endif %}
+                  {% if exercise.youtube_exercise %}
+                  {% video exercise.youtube_exercise '100%x400' %}
+                  {% endif %}
+                  <hr>
+                  {% if exercise.audio %}
+                  <audio style="margin-top: 10px;" controls>
+                      <source src="{{exercise.audio.url}}" type="audio/mpeg">
+                      
+                  </audio>
+                  {% endif %}
+                  <hr>
+               
+                <div class="post-content">
+                    
+                    <div class="reaction-wrapper">
+                        
+                        
+                       
+                       
+                    </div>
+
+                    <!-- <a style="cursor: pointer;" class="likes">{{blog.category.title}}</a> -->
+                    <!--  -->
+                    <a href="{% url 'blog:exercise-detail' exercise.slug %}">
+                        {{ exercise.title }}
+                    </a>
+                    <a href="{% url 'blog:exercise-detail' exercise.slug %}" class="read-more">Read,<span>More</span></a>
+                    <p class="post-time">{{ exercise.date_posted|date:"F d, Y" }}</p>
+                </div>
+            </div>
+            {% empty %}
+            {% include "blog/no_posts_home.html" %}
+          {% endfor %}
+        </div>
+        </div>
+        <div class="loading" style="display: none;">
+          Loading...
+          <br>
+        </div>
+        {% if exercises.has_next %}
+          <a class="infinite-more-link" style="display: none;" href="?page={{ exercises.next_page_number }}">More</a>
+        {% endif %} 
+       
+      </div> 
+
+
+</section>
+
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script  src="{% static 'blog/js/jquery.waypoints.min.js' %}"></script>
+<script  src="{% static 'blog/js/infinite.min.js' %}"></script> 
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').hide();
+    }
+  });
+</script>
+{% endblock %}

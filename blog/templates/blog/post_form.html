@@ -1,0 +1,122 @@
+{% extends "blog/base.html" %}
+ {% block title %}
+   <title>Add post * @{{request.user.username}} </title> 
+ {% endblock %}
+ {% block head %}
+<meta
+  name="description"
+  content="share worthy posts">
+{% endblock head %}
+{% block content %}
+
+
+<style>
+    .form{
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+        width: 100%;
+    }
+</style>
+{% load widget_tweaks %}
+
+<div id="overlay">
+    <div class="cv-spinner">
+      <span class="spinner"></span>
+    </div>
+  </div>
+
+    <div class="content-section" style="margin-top: 100px; text-align: center;">
+        <form action="{% url 'blog:post-create' %}" method="POST" id="post-form">
+            {% csrf_token %}
+                <legend style="text-align: center; margin-bottom: 10px;">Add Post</legend>
+                
+                    
+
+                    {% for field in form %}
+                            {% render_field field class="form" placeholder=field.label %}
+                           {% endfor %}
+                
+
+            
+            <div class="form-group" style="display: flex;justify-content: flex-end;">
+                <button  type="submit" id="post" style=" margin-top: 30px; background-color: #3210dd; color: #fff; padding: 5px 25px">Post</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    jQuery(function($){
+  $(document).ajaxSend(function() {
+    $("#overlay").fadeIn(300);
+  });
+    
+  $('#post').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  }); 
+
+
+});
+</script>
+
+<script>
+    $('#post-form').on('submit', function(event){
+        event.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            xhr : function(){   
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress',function(event){
+                    if (event.lengthComputable){
+
+                        var percent = Math.round((event.loaded/event.total)*100);
+                        $('.loading-bar').show();
+                        $('#post-form').hide();
+                        $('#progress-bar').attr('aria-valuenow',percent).css('width',percent+'%').text(percent+'%')
+                    }
+                });
+                return xhr;
+            },
+            url : "{% url 'blog:post-create' %}", 
+            type : "POST", 
+            data: formData,
+            processData: false,
+            contentType: false,
+            success : function(json) {
+              window.location.href=(json.url);
+            },
+
+            error : function(xhr,errmsg,err) {
+            }
+        });
+    });
+   
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#div_id_image').children('div').addClass('currentPhoto');
+        $('.currentPhoto').children('a').hide();
+        let isTextNode = (_, el) => el.nodeType === Node.TEXT_NODE;
+        $('.currentPhoto').contents().filter(isTextNode).remove();
+        var img = document.createElement("IMG");
+        img.src = '{{ post.image_thumbnail_detail.url }}';
+        img.setAttribute('class', 'post-img-update');
+        $('.currentPhoto').prepend('<br>Change Image'); 
+        $('.currentPhoto').prepend(img);
+    });
+</script>
+
+{% endblock %}

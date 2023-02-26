@@ -1,0 +1,45 @@
+{% extends "blog/base.html" %}
+ {% block title %}
+   <title>Update post * @{{request.user.username}}</title> 
+ {% endblock %}
+
+
+
+{% block content %}
+
+{% load widget_tweaks %}
+
+<style>
+    .form{
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+        width: 100%;
+    }
+</style>
+
+
+
+<form action="{% url 'blog:post-update' post.pk%}" method="POST" id="post-form">
+    {% csrf_token %}
+
+    <div style="margin-top: 150px;">
+       
+        {% for field in form %}
+                {% render_field field class="form" placeholder=field.label %}
+               {% endfor %}
+    </div>
+
+    <div style="cursor: pointer;">
+  		<button type="submit" id="form-submit" style=" background-color: aqua; border-radius: 5%; padding: 5px 25px ; margin-top: 10px;">Update</button>
+    </div>
+</div>
+	
+
+</form>
+
+
+  
+{% endblock content %}
+
+

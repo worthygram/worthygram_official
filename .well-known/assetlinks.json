@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.worthygram.www.twa",
+      "sha256_cert_fingerprints":
+        ["F0:F0:A3:E3:C0:EA:0D:86:F6:B3:29:09:FF:09:DE:63:8B:74:A0:8F:ED:9D:2A:4B:01:9E:5B:EB:47:10:00:42"]
+    }
+  }
+]

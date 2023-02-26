@@ -1,0 +1,22 @@
+ {% extends "blog/base.html" %}
+ {% block title %}
+  <title>logged out</title>
+{% endblock %} 
+ {% block content %}
+
+<div style="margin-top: 100px; text-align: center;" >
+    <h2 style="color: #e1580f; font-weight: bolder; font-size: 40px;">You have been logged out</h2>
+<div style="margin-top: 20px;">
+
+    <h3 style="color: #0fe144; font-weight: bolder; ">
+        Login again to see worthy posts and do worthy activities like meditation,journalling etc
+    </h3>
+
+   
+        <div style="margin-top: 10px;">
+            <a style="color: #007da1; font-weight: bolder; "  href="{% url 'login' %}">Log In</a>
+        </div>
+    
+</div>
+</div>
+{% endblock content %}

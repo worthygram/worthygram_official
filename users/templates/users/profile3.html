@@ -1,0 +1,866 @@
+{% extends "blog/base.html" %} 
+{% block title %}<title>{{request.user.username}}</title>{% endblock %}
+
+{% block head %}
+<meta
+  name="description"
+  content="make your worthy profile now">
+{% endblock head %}
+
+{% block content %}
+<style>
+
+.profile-pic {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+        padding: 3px;
+        background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+    }
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 150px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 75%;
+  margin: auto;
+  border-top: 1px solid dk-grey;
+  margin-top: 3%;
+
+}   
+
+.button {
+  display: inline-block;
+  background: #850059;
+  color: white;
+  padding: 1%;
+  margin: 5% 1%;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+  border: 1px solid magenta;
+  transition: all .3s linear 0s; 
+  }
+
+  .btn-2:hover {
+   
+    background: white;
+    color: #850059;
+    border: 1px solid magenta;
+  
+}
+    /*
+
+All grid code is placed in a 'supports' rule (feature query) at the bottom of the CSS (Line 310). 
+        
+The 'supports' rule will only run if your browser supports CSS grid.
+
+Flexbox and floats are used as a fallback so that browsers which don't support grid will still recieve a similar layout.
+
+*/
+
+/* Base Styles */
+
+[data-pagination],
+[data-pagination] *,
+[data-pagination] *:before,
+[data-pagination] *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-kerning: auto;
+}
+[data-pagination] {
+  font-size: 8pt;
+  line-height: 1;
+  font-weight: 400;
+  font-family: 'Open Sans', 'Source Sans Pro', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  margin: 1em auto;
+  text-align: center;
+  transition: font-size .2s ease-in-out;
+}
+[data-pagination] ul {
+  list-style-type: none;
+  display: inline;
+  font-size: 100%;
+  margin: 0;
+  padding: .5em;
+}
+[data-pagination] ul li {
+  display: inline-block;
+  font-size: 100%;
+  width: auto;
+  border-radius: 3px;
+}
+[data-pagination] > a {
+  font-size: 140%;
+}
+[data-pagination] a {
+  color: #777;
+  font-size: 100%;
+  padding: .5em;
+}
+[data-pagination] a:focus,
+[data-pagination] a:hover {
+  color: #f60;
+}
+[data-pagination] li.current {
+  background: rgba(0,0,0,.1)
+}
+/* Disabled & Hidden Styles */
+[data-pagination] .disabled,
+[data-pagination] [hidden],
+[data-pagination] [disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+@media (min-width: 350px) {
+  [data-pagination] {
+    font-size: 10pt;
+  }
+}
+@media (min-width: 500px) {
+  [data-pagination] {
+    font-size: 12pt;
+  }
+}
+@media (min-width: 700px) {
+  [data-pagination] {
+    font-size: 14pt;
+  }
+}
+@media (min-width: 900px) {
+  [data-pagination] {
+    font-size: 16pt;
+  }
+}
+
+
+
+img {
+    display: block;
+}
+
+.container {
+    /* max-width: 93.5rem; */
+    margin: 0 1em;
+    /* padding: 0 2rem; */
+}
+
+.btn {
+    display: inline-block;
+    font: inherit;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
+}
+
+.btn:focus {
+    outline: 0.5rem auto #4d90fe;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* Profile Section */
+
+.profile {
+    padding: 5rem 0;
+}
+
+.profile::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.profile-image {
+    float: left;
+    width: calc(33.333% - 1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3rem;
+}
+
+.profile-image img {
+    border-radius: 50%;
+}
+
+.profile-user-settings,
+.profile-stats,
+.profile-bio {
+    float: left;
+    width: calc(66.666% - 2rem);
+}
+
+.profile-user-settings {
+    margin-top: 1.1rem;
+}
+
+.profile-user-name {
+    display: inline-block;
+    font-size: 3.2rem;
+    font-weight: 300;
+}
+
+.profile-edit-btn {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    border: 0.1rem solid #dbdbdb;
+    border-radius: 0.3rem;
+    padding: 0 2.4rem;
+    margin-left: 2rem;
+}
+
+.profile-settings-btn {
+    font-size: 2rem;
+    margin-left: 1rem;
+}
+
+.profile-stats {
+    margin-top: 2.3rem;
+}
+
+.profile-stats li {
+    display: inline-block;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    margin-right: 4rem;
+    cursor: pointer;
+}
+
+.profile-stats li:last-of-type {
+    margin-right: 0;
+}
+
+.profile-bio {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 2.3rem;
+}
+
+.profile-real-name,
+.profile-stat-count,
+.profile-edit-btn {
+    font-weight: 600;
+}
+
+/* Gallery Section */
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1rem -1rem;
+    padding-bottom: 3rem;
+}
+
+.gallery-item {
+    position: relative;
+    flex: 1 0 22rem;
+    margin: 1rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.gallery-item:hover .gallery-item-info,
+.gallery-item:focus .gallery-item-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item-info {
+    display: none;
+}
+
+.gallery-item-info li {
+    display: inline-block;
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.gallery-item-likes {
+    margin-right: 2.2rem;
+}
+
+.gallery-item-type {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.fa-clone,
+.fa-comment {
+    transform: rotateY(180deg);
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Loader */
+
+.loader {
+    width: 5rem;
+    height: 5rem;
+    border: 0.6rem solid #999;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: loader 500ms linear infinite;
+}
+
+/* Media Query */
+
+@media screen and (max-width: 40rem) {
+    .profile {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 4rem 0;
+    }
+
+    .profile::after {
+        display: none;
+    }
+
+    .profile-image,
+    .profile-user-settings,
+    .profile-bio,
+    .profile-stats {
+        float: none;
+        width: auto;
+    }
+
+    .profile-image img {
+        width: 7.7rem;
+    }
+
+    .profile-user-settings {
+        flex-basis: calc(100% - 10.7rem);
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .profile-user-name {
+        font-size: 1.5rem;
+    }
+
+    .profile-edit-btn {
+        order: 1;
+        padding: 0;
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .profile-edit-btn {
+        margin-left: 0;
+    }
+
+    .profile-bio {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+    }
+
+    .profile-edit-btn,
+    .profile-bio,
+    .profile-stats {
+        flex-basis: 100%;
+    }
+
+    .profile-stats {
+        order: 1;
+        margin-top: 1.5rem;
+    }
+
+    .profile-stats ul {
+        display: flex;
+        text-align: center;
+        padding: 1.2rem 0;
+        border-top: 0.1rem solid #dadada;
+        border-bottom: 0.1rem solid #dadada;
+    }
+
+    .profile-stats li {
+        font-size: 1.4rem;
+        flex: 1;
+        margin: 0;
+    }
+
+    .profile-stat-count {
+        display: block;
+    }
+}
+
+/* Spinner Animation */
+
+@keyframes loader {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/*
+
+The following code will only run if your browser supports CSS grid.
+
+Remove or comment-out the code block below to see how the browser will fall-back to flexbox & floated styling. 
+
+*/
+
+@supports (display: grid) {
+    .profile {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: repeat(3, auto);
+        grid-column-gap: 3rem;
+        align-items: center;
+    }
+
+    .profile-image {
+        grid-row: 1 / -1;
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        grid-gap: 2rem;
+    }
+
+    .profile-image,
+    .profile-user-settings,
+    .profile-stats,
+    .profile-bio,
+    .gallery-item,
+    .gallery {
+        width: auto;
+        margin: 0;
+    }
+
+    @media (max-width: 40rem) {
+        .profile {
+            grid-template-columns: auto 1fr;
+            grid-row-gap: 1.5rem;
+        }
+
+        .profile-image {
+            grid-row: 1 / 2;
+        }
+
+        .profile-user-settings {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-gap: 1rem;
+        }
+
+        .profile-edit-btn,
+        .profile-stats,
+        .profile-bio {
+            grid-column: 1 / -1;
+        }
+
+        .profile-user-settings,
+        .profile-edit-btn,
+        .profile-settings-btn,
+        .profile-bio,
+        .profile-stats {
+            margin: 0;
+        }
+    }
+}
+
+</style>
+
+<div id="overlay">
+    <div class="cv-spinner">
+      <span class="spinner"></span>
+    </div>
+  </div>
+
+
+<header style="margin-top: 60px;"  >
+
+	<div class="container">
+
+		<div class="profile">
+
+			<div class="profile-image">
+
+				<!-- <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" alt=""> -->
+				{% if user_id.profile.image %}
+                <img height="108" width="108" src="{{ user_id.profile.image.url }}" alt="profile-pic">
+                {% else %}
+                <img src="/static/blog/img/logo.png" class="profile-pic" alt="profile-pic">
+                {% endif %}
+			</div>
+
+			<div class="profile-user-settings">
+
+				<h1 class="profile-user-name">{{ user_id.username }}</h1>
+        
+        <br>
+				<a href="{% url 'profile-update' %}" data-toggle="tooltip-update" title="Edit Profile"><button class="btn profile-edit-btn">Edit Profile</button></a>
+
+				
+
+          
+
+			</div>
+
+			<div class="profile-stats">
+
+				<ul>
+					<li><span class="profile-stat-count">{{post_count}}</span> posts</li>
+					<!-- <a id="myBtn" data-dismiss="modal" aria-label="Close" href=""><li><span class="profile-stat-count" >{{user_id.profile.followers.count}}</span> followers</li></a> -->
+                    <li id="myBtn"><span class="profile-stat-count">{{user_id.profile.followers.count}}</span>followers</li>
+					<li id="myBtn2"><span class="profile-stat-count">{{user_id.profile.follows.count}}</span> following</li>
+				</ul>
+
+               <div class="btn-container">
+                <div style="text-align: center;">
+                    {% if user_id == request.user %}
+                       <a href="{% url 'blog:post-create' %}" data-toggle="tooltip" title="Add Post">
+                           <button type="button" class="button" style="margin-right: 10px;">Add Post</button>
+                       </a>
+                   {% endif %}
+               </div>
+                <a href="{% url 'follow-unfollow' user_id.id %}">
+                    {% if user_id in request.user.profile.follows.all %}
+                    <button type="button" class="button btn-2">Unfollow Buddy</button>
+                    {% else %}
+                    <button type="button" class="button btn-2">Follow Buddy</button>
+                    {% endif %}
+            </a>
+            <div style="display: flex; gap: 10px; margin-top: 5px; margin-left: 10px;">
+              
+              {% load social_share %}
+              {% post_to_whatsapp  object_or_url "<img height='30' width='30'  alt='whatsapp' src='/static/blog/img/whatsapp.svg' >"%}
+             
+              {% copy_to_clipboard object_or_url "<img  height='30' width='30'  alt='copy' src='/static/blog/img/copy.svg' >"%}
+            
+              {% add_copy_script %}
+              
+              </div>
+               </div>
+               
+
+			</div>
+
+			<div class="profile-bio">
+
+        <span class="profile-real-name">{{ user_id.profile.name }}</span>
+				<p>  <a class="btn profile-edit-btn" href="{{user_id.profile.bio_link}}" target="_blank">{{user_id.profile.bio_link|truncatechars:35}}</a></p>
+        <p>{{ user_id.profile.description }}</p>
+			</div>
+           
+
+		</div>
+		<!-- End of profile section -->
+
+	</div>
+	<!-- End of container -->
+
+</header>
+
+<main>
+
+	<div class="container">
+
+		<div class="gallery">
+            {% for post in posts %}
+
+			<div class="gallery-item" style="margin-top: 50px;" tabindex="0">
+        
+
+				{% if post.image %}
+                <img src="{{post.image.url}}" class="gallery-image" alt="">
+                {% endif %}
+                
+                {% if post.video %}
+                <video class="gallery-image" autoplay loop muted playsinline>
+                  <source src="{{post.video.url}}"  type="video/webm" />
+                </video>
+                {% endif %}
+               
+                
+                    <hr>
+                <div style="margin-top: 5px;">
+                    
+                    <a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a>
+                    
+                    
+                    <hr>
+                    <a href="{% url 'blog:post-detail' post.slug %}" class="read-more">Read,<span>More</span></a>
+                </div>
+               
+
+			</div>
+
+            
+            
+            {% empty %}
+            {% if user_id == request.user %}
+                <p>To add post click Add Post button.</p>
+                <p>To add or edit more information on your profile click on Edit profile button.</p>
+                <br>
+            {% endif %}
+                  
+
+            {% endfor %}
+
+			
+
+		</div>
+		<!-- End of gallery -->
+        {% if user.is_authenticated %}
+        <!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <!-- <span class="close">&times;</span> -->
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+        </button>
+        <p>followers</p>
+
+        {% for pro in user_id.profile.followers.all %}
+        <div class="user-follow-status-model">
+            <div class="user-follow-status-model-image">
+                {% if pro.profile.image %}
+                <img class="profile-pic" type="img" src="{{pro.profile.image.url}}">
+                {% else %}
+                <img class="profile-pic" alt="follower">
+                {% endif %}
+                
+            </div>
+            <div class="user-follow-status-model-name">
+                <a href="{% url 'profile' pro.username %}" class="link-style-none">{{pro.username}}</a>
+            </div>
+            
+        </div>
+        
+        
+        {% empty %}
+        <div class="user-follow-status-model">
+            <div class="user-follow-status-model-name">
+                <a href="#" class="link-style-none">0 followers</a>
+            </div>
+        </div>				
+        {% endfor %}
+    </div>
+    
+    </div>
+  
+  </div>
+
+
+
+   <div id="myModal2" class="modal"> 
+
+    <!-- Modal content -->
+     <div class="modal-content">
+          <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+        </button>
+        <p>following</p>
+
+        {% for pro in user_id.profile.follows.all %}
+        <div class="user-follow-status-model">
+            <div class="user-follow-status-model-image">
+              {% if pro.profile.image %}
+                <img class="profile-pic" src="{{pro.profile.image.url}}" alt="following">
+              {% else %}
+              <img class="profile-pic" alt="following">
+              {% endif %}
+            </div>
+            <div class="user-follow-status-model-name">
+                <a href="{% url 'profile' pro.username %}" class="link-style-none">{{pro.username}}</a>
+            </div>
+        </div>
+        {% empty %}
+       <div class="user-follow-status-model">
+            <div class="user-follow-status-model-name">
+                <a href="#" class="link-style-none">0 following</a>
+            </div>
+        </div>			
+        {% endfor %}
+    </div>
+    </div>
+
+
+  </div> 
+
+  {% endif %}
+
+
+  <div>
+    <nav aria-label="..." data-pagination>
+    
+      <ul >
+        {% if posts.has_previous %}
+        <li >
+          <a href="{% url 'profile' request.user.username  %}?page={{ posts.previous_page_number }}" tabindex="-1">Previous</a>
+        </li>
+        {% endif %}
+        <li style="margin-left: 10px;"><a href="{% url 'profile' request.user.username %}?page=1">1</a></li>
+        <li style="margin-left: 10px;">
+          <a  href="{% url 'profile' request.user.username %}?page=2">2</a>
+        </li>
+        <li style="margin-left: 10px;"><a  href="{% url 'profile' request.user.username %}?page=3">3</a></li>
+    
+        {% if posts.has_next %}
+    
+        <li style="margin-left: 10px;">
+          <a  href="{% url 'profile' request.user.username  %}?page={{ posts.next_page_number }}">Next</a>
+        </li>
+    
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
+	</div>
+	<!-- End of container -->
+
+</main>
+
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script>
+var second_modal = document.getElementById("myModal2")
+var btn2 = document.getElementById("myBtn2");
+var span2 = document.getElementsByClassName("close")[1];
+
+btn2.onclick = function() {
+      second_modal.style.display = "block";
+    }
+
+    span2.onclick = function() {
+      second_modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == second_modal) {
+        second_modal.style.display = "none";
+      }
+    }
+
+
+
+</script>
+
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    
+
+
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+ 
+    
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal ) {
+        modal.style.display = "none";
+      }
+    }
+    </script>
+
+
+
+{% endblock %}

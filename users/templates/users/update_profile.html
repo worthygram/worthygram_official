@@ -1,0 +1,118 @@
+{% extends "blog/base.html" %} 
+{% load static %}
+
+{% block title %}<title> @{{request.user.username}} profile update</title>{% endblock %}
+
+{% block content %}
+<style>
+    .form{
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+        width: 100%;
+    }
+</style>
+{% load widget_tweaks %}
+<div style="margin-top: 130px; ">
+    <form method="POST" enctype="multipart/form-data" id="user-update-form">
+        {% csrf_token %}
+        <table>
+            <div >
+                <legend >Update Profile
+                </legend>
+            </div>
+            
+           {% for field in u_form %}
+            {{ field.username  }}
+            {{ field.email}}
+            {% render_field field class="form" %}
+           {% endfor %}
+
+           <br>
+
+           {% for field in p_form %}
+            {{ field.name  }}
+            {{ field.description}}
+            {% render_field field class="form" %}
+           {% endfor %}
+
+        </table>
+            
+            
+    
+        <div class="form-group" style="margin-top: 10px; text-align: center;">
+            <button 
+            style="width: 30%;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 15px;
+            padding-bottom: 12px;
+            border-radius: 40px;
+            background-color: #007da1;
+            color: #fff;
+            border: none;
+            font-size: 10px;
+            font-weight: 600;"
+             type="submit" id="submit-update-btn">Update</button>
+             
+        </div>
+        <!-- <div class="form-group" style="margin-top: 30px; text-align: center;">
+            
+            <a target="_blank" style="width: 100%;
+            margin-top: 10px;
+            padding-top: 15px;
+            padding-bottom: 12px;
+            background-color: #a12e00;
+            color: #fff;
+            border: none;
+            font-size: 10px;
+            font-weight: 600;" href="{% url 'profile' request.user.username  %}"> 
+           Copy Profile
+            </a>
+             
+        </div> -->
+        
+      
+    </form>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <small >
+            <b>Change Password?</b>
+            <a class="ml-2" href="{% url 'change-password' %}">click here</a>
+        </small>
+        
+    </div>
+    
+</div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        // $('#div_id_image').children('div').addClass('currentPhoto');
+        // $('.currentPhoto').children('a').hide();
+        // let isTextNode = (_, el) => el.nodeType === Node.TEXT_NODE;
+        // $('.currentPhoto').contents().filter(isTextNode).remove();
+        // var img = document.createElement("IMG");
+        // img.src = '{{ user.profile.image_thumbnail_user.url }}';
+        // img.setAttribute('class', 'account-img');
+        // $('.currentPhoto').prepend('<br>Change Image'); 
+        // $('.currentPhoto').prepend(img);
+        $('#hint_id_camps').html('Add comma between Camps you have attended!');
+        $('#div_id_camps label').html('Camps*');
+
+        $('#submit-update-btn').on('click',function(e){
+            if ($('#id_username').val()!=="" && $('#id_email').val()!==""){
+                $('#loader').show()
+            }
+            else{
+                $('#loader').hide()
+
+            }
+        })
+
+    });
+</script>
+{% endblock %}

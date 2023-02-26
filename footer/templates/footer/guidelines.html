@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+ {% block title %}
+   <title>Guideline</title> 
+ {% endblock %}
+ {% block content %}
+
+<div style="margin-top: 150px; text-align: center; font-weight: bold;">
+
+	<h1 style="color: #f40c0c; margin-bottom: 10px;">Guidelines</h1>
+	<p style="margin-top: 5px; font-weight: bolder;" >1. By posting on "worthygram.com", you are agreeing to abide by the following community guidelines (‘Guidelines’). Although we will do our utmost to avoid this, "worthygram.com" reserves the right to delete, move or otherwise alter posts posted by users if they are deemed to violate these guidelines.</p>
+   <ul style="margin-top: 5px; ">	 
+   		<li style="margin-top: 5px; font-weight: bolder;">2. Usernames, posts and profile-info must not contain any profane, offensive, or derogatory terms</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">3. Posting of advertisements, promotions, and spam is prohibited</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">4. Please don’t post knowingly offensive slurs and discriminatory posts based on race, ethnicity, gender, physical and mental ability, sexual orientation, religion, culture, beliefs or politics. Derogatory statements of any kind are not allowed</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">5. No threats of any kind, personal attacks, or harassment</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">6. Do not encourage others to violate laws or harm property or people</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">7. Profanity is prohibited—whether blatant or censored with special characters</li>
+   		<li style="margin-top: 5px; font-weight: bolder; font-weight: bolder;">8. No inflammatory or libelous statements are alloweds</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">9. No unlawful content (local, state, or central) is allowed to be posted or linked to</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">10. Please don’t impersonate anyone or misrepresent yourself</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">11. Don’t post any medical advice, or accept any medical advice from other users</li>
+   		<li style="margin-top: 5px; font-weight: bolder;">12. Don’t upload, post, transmit, or make available, any material that contains viruses or any other computer code, programs or files designed to destroy, interrupt, or limit the functionality of any computer software or hardware or telecommunications equipment.</li>
+
+   		<p style="margin-top: 5px; font-weight: bolder;">13. Please alert "worthygram.com" if you see offensive language, abusive language, spam, self-promotion or advertising, or off-topic posts. The "worthygram.com" will take measures to ensure that questionable posts are removed if they violate the community guidelines.<br>
+   		<p style="margin-top: 10px; color: #59f40c;"><a style="color: #4a0cf4;" href="{% url 'community:contact' %}">click here</a> to contact.</p>
+   		</p>
+   </ul>
+
+</div>
+
+{% endblock content %}

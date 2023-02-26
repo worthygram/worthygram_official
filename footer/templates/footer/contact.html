@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+ {% block title %}
+   <title>Contact</title> 
+ {% endblock %}
+ {% block content %}
+ {% load widget_tweaks %}
+<style>
+    .form{
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+        width: 100%;
+    }
+</style>
+
+{% if message %}
+<div >
+
+<p style="margin-top: 250px;; text-align: center; font-weight: bolder; color: #000;"> {{message}}</p>
+{% else %}
+		<form style="margin-top: 150px;" method="POST">
+	        {% csrf_token %}
+	        <!-- <fieldset class="form-group"> -->
+	            <!-- <legend class="border-bottom mb-4">Contact</legend> -->
+	            <p style="text-align: center; font-weight: bold; color: #000;">Message, Quries and Feedbacks are welcome.</p>
+	           
+
+				{% for field in form %}
+                {% render_field field class="form" placeholder=field.label %}
+               {% endfor %}
+	        <!-- </fieldset> -->
+	        <div class="form-group">
+	            <a><button class="btn btn-outline-info btn-sm" style="margin-top: 10px;" type="submit">Send</button></a>
+	        </div>
+	    </form>
+	{% endif %}
+</div>
+
+{% endblock content %}

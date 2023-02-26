@@ -1,0 +1,93 @@
+{% extends "blog/base.html" %} 
+{% block title %}
+  <title>Login
+
+    
+  </title>
+{% endblock %} 
+{% block content %}
+{% load widget_tweaks %}
+<style>
+    .form{
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+        width: 100%;
+    }
+</style>
+
+<div id="overlay">
+    <div class="cv-spinner">
+      <span class="spinner"></span>
+    </div>
+  </div>
+
+<div style="margin-top: 150px;">
+    <form method="POST">
+        {% csrf_token %}
+        
+            <div style="text-align: center;">
+                <h2 style="font-size: 20px; font-weight: bolder; color: #4520d8;">Turn your REEL 📺 Happiness to REAL 😇 Happiness,try Worthygram</h2>
+                <legend class="border-bottom mb-4">Log In</legend>
+            {% for field in form %}
+                {% render_field field class="form" placeholder=field.label %}
+               {% endfor %}
+
+              <div style="margin-top: 10px;"> 
+                
+                <small class="text-muted ml-2">
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </small>
+                
+              </div>
+
+              <button style="width: 30%;
+              align-items: center;
+              margin-top: 10px;
+              padding-top: 15px;
+              padding-bottom: 12px;
+              border-radius: 40px;
+              background-color: #007da1;
+              color: #fff;
+              border: none;
+              font-size: 20px;
+              font-weight: 600;" id="login" type="submit">Login</button>
+
+
+               <div style="margin-top: 10px;">
+                <small >
+                    <b>Need An Account?</b> 
+                    <a style="margin-left: 10px;" href="{% url 'register' %}">Sign Up Now</a>
+                </small>
+               </div>
+            </div>
+        
+        
+    </form>
+    
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+       jQuery(function($){
+  $(document).ajaxSend(function() {
+    $("#overlay").fadeIn(300);
+  });
+    
+  $('#login').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  }); 
+});
+</script>
+{% endblock script %}

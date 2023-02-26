@@ -1,0 +1,24 @@
+ {% extends "blog/base.html" %} 
+ {% block title %}
+   <title>Confirm delete * {{post.title}} </title> 
+ {% endblock %}
+ {% block content %}
+<div style="margin-top:150px" >
+    <form method="POST">
+        {% csrf_token %}
+        
+            <legend style="text-align: center;">Delete Post</legend>
+            <h5 style="margin-left: 100px; font-weight: bold;">Are you sure you want to delete the post?</h5>
+            <h3 style="margin-left: 100px;">"{{ post.title }}"</h3>
+        
+        <div style="margin-top: 10px;">
+            <button style="margin-left: 100px;" type="submit">Yes, Delete
+            </button>
+            <a class="btn btn-outline-secondary btn-sm"
+               href="{% url 'blog:post-detail' post.slug %}">Cancel
+            </a>
+            <!-- <br><small style="margin-left: 100px; text-align: center;">Once post deleted there is now way it can be bring back.</small> -->
+        </div>
+    </form>
+</div>
+{% endblock content %}

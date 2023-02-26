@@ -1,0 +1,267 @@
+
+{% extends "blog/base.html" %}
+{% load static %}
+{% block title %}
+<title>Search & Recent Posts</title>
+{% endblock %}
+{% block head %}
+<meta name="description" content="search worthy posts and users">
+{% endblock head %}
+{% block content %}
+<style>
+  .button {
+    display: inline-block;
+    background: #850059;
+    color: white;
+    padding: 0.1%;
+    /* margin: 5% 1%; */
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    border: 1px solid magenta;
+    transition: all .3s linear 0s;
+  }
+
+  
+
+
+  .resent-posts {
+    margin-bottom: 20px
+  }
+
+  .read-more {
+    float: right
+  }
+
+  .resent-posts-heading {
+    font-size: 20px;
+    text-decoration: underline
+  }
+
+  .content-section-blue {
+    background: #fff;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 3px #419dff
+  }
+
+  .link-style-none {
+    color: #333;
+    text-decoration: none
+  }
+
+  .search-form-div {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+  }
+
+  .search-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between
+  }
+
+  .search-input {
+    width: 87%;
+    padding: 4px;
+    border-radius: 3px;
+    border: 2px solid #2ecc71;
+    margin-right: 5px;
+    color: inherit
+  }
+
+  .btn-search {
+    padding: 4px 15px;
+    border-radius: 3px;
+    background-color: #1a35e4;
+    color: #fff;
+    border: none;
+    cursor: pointer
+  }
+
+  .content-section {
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 3px #b3e8b3
+  }
+
+  @media only screen and (max-width:400px) {
+    .content-section {
+      padding: 5px 10px;
+      background: #fff;
+      margin-bottom: 20px;
+      border-radius: 3px
+    }
+  }
+
+  .profile-pic {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 3px;
+    background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+  }
+</style>
+
+
+
+
+<div class="search-form-div" style="margin-top: 100px;">
+  <form method="POST" class="search-form">
+    {% csrf_token %}
+    <input type="text" name="search" class="search-input" placeholder="search username and posts">
+    <input type="submit" name="" value="Search" class="btn-search">
+  </form>
+</div>
+
+{% if message %}
+<div class="resent-posts">
+  <h1 class="resent-posts-heading">{{message}}</h1>
+</div>
+{% endif %}
+{% if users %}
+<div class="resent-posts">
+  <h1 class="resent-posts-heading">User result:</h1>
+</div>
+<div class="content-section-blue">
+
+  {% for pro in users %}
+  <div>
+    <div>
+      <a class="link-style-none" href="{% url 'profile' pro.username %}">
+        {% if pro.profile.image %}
+        <img alt="user" src="{{pro.profile.image.url}}" width="55">
+        {% else %}
+        <img src="/static/blog/img/logo.png" class="profile-pic" alt="user">
+        {% endif %}
+
+      </a>
+      <div>
+        <span> {{ pro.profile.name }}</span>
+        <a class="link-style-none" href="{% url 'profile' pro.username %}"><span
+            style="font-weight: bolder;">{{pro.username}}</span></a>
+      </div>
+    </div>
+    <div>
+
+      {% if pro in user.profile.follows.all %}
+      <p style="font-weight: bolder;">following</p>
+      {% else %}
+      <p style="margin-top: 5px;"> <a class="button" href="{% url 'profile' pro.username  %}">Follow</a></p>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endif %}
+
+{% if result_posts %}
+<div class="resent-posts">
+  <h1 class="resent-posts-heading">Post results for: {{search_input}}</h1>
+</div>
+{% for post in result_posts %}
+
+<article class="content-section">
+  {% if post.image %}
+  <img class="profile-pic" src="{{ post.image.url }}" alt="post">
+  {% endif %}
+  {% if post.video %}
+  <video class="profile-pic" autoplay loop muted playsinline>
+    <source src="{{post.video.url}}" type="video/webm" />
+  </video>
+  {% endif %}
+  <div>
+    <div>
+      <a href="{% url 'profile' post.author.username %}">{{ post.author }}
+      </a>
+      <small style="margin-left: 10px; ">on {{ post.date_posted|date:"F d, Y" }}
+      </small>
+    </div>
+    <h2 style="margin-top: 5px; font-weight: bolder;">{{ post.title }} </h2>
+    <p style="margin-top: 5px;">{{ post.content|truncatewords:15}}</p>
+    <a class="read-more" href="{% url 'blog:post-detail' post.slug %}"><small>Read More</small></a>
+
+    <div>
+      <span>{{post.likes.count}} worthy Claps</span>
+    </div>
+
+  </div>
+</article>
+{% endfor %}
+{% endif %}
+<div class="resent-posts">
+  <h1 class="resent-posts-heading">Recent Posts:</h1>
+</div>
+<div class="infinite-container">
+  {% for post in posts %}
+  <article class="content-section infinite-item">
+    {% if post.image %}
+    <img class="profile-pic" alt="post" src="{{ post.image.url }}">
+    {% endif %}
+    {% if post.video %}
+    <video class="profile-pic" autoplay loop muted playsinline>
+      <source src="{{post.video.url}}" type="video/webm" />
+    </video>
+    {% endif %}
+    <div>
+      <div>
+        <a href="{% url 'profile' post.author.username %}">{{ post.author }}
+        </a>
+        <small style="margin-left: 10px;">on {{ post.date_posted|date:"F d, Y" }}
+        </small>
+      </div>
+      <h2 style="margin-top: 5px; font-weight: bolder;">{{post.title}}</h2>
+      <p style="margin-top: 5px;">{{ post.content|truncatewords:15}}</p>
+      <a class="read-more" href="{% url 'blog:post-detail' post.slug %}"><small>Read More</small></a>
+      <div>
+        <span>{{post.likes.count}} worthy Claps</span>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+<div class="loading" style="display: none;">
+  Loading...
+  <br>
+</div>
+{% if posts.has_next %}
+  <a class="infinite-more-link" style="display: none;" href="?page={{ posts.next_page_number }}">More</a>
+{% endif %} 
+
+</div>       
+
+
+  </article>
+
+
+
+
+
+
+  {% endblock content %}
+
+{% block script %}
+<script  src="{% static 'blog/js/jquery.waypoints.min.js' %}"></script>
+<script  src="{% static 'blog/js/infinite.min.js' %}"></script> 
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').hide();
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block title %}
+<title>worthy prints</title>
+{% endblock %}
+{% block head %}
+<meta
+  name="description"
+  content="get Certificates and worthy printables for your hard work">
+{% endblock head %}
+{% block content %}
+<style>
+
+    table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .95em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 200px) {
+  table {
+    border: 0;
+    color: #000;
+  }
+
+  table caption {
+    font-size: 1.3em;
+    color: #000;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    color: #000;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    color: #000;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    color: #000;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    z-index: 9999;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+</style>
+
+<div id="overlay">
+  <div class="cv-spinner">
+    <span class="spinner"></span>
+  </div>
+</div>
+
+    <div style="margin-top: 100px;">
+        
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for i in context %}
+                {% if i.author == user %}
+                
+                <tr>
+                    <td data-label="Title" style="color: #000;">{{i.title}}</td>
+                    <td><a  data-label="Download" href="{{i.certify.url}}" download>Download</a></td>
+                </tr>
+                
+                {% else %}
+                <tr>
+                  {% if i.certify_all %}
+                  <td data-label="Title" style="color: #000;">{{i.title}}</td>
+                  <td><a  data-label="Download" href="{{i.certify_all.url}}" download>Download</a></td>
+                  {% endif %}
+              </tr>
+              
+               
+            </tbody>
+            
+            <!-- <h1>Title:{{i.title}}</h1> -->
+            <!-- <h1>DOWNLOAD THE FILE FROM HERE<a href="{{i.Certificates.url}}" download>{{i.title}}</a></h1> -->
+            {% endif %}
+            {% endfor %}
+            
+        </table>
+       
+    </div>
+{% endblock %}
+
+{% block script %}
+<!-- <script>
+    jQuery(function($){
+  $(document).ajaxSend(function() {
+    $("#overlay").fadeIn(300);
+  });
+    
+  $('#button').click(function(){
+    $.ajax({
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+      }
+    }).done(function() {
+      setTimeout(function(){
+        $("#overlay").fadeOut(300);
+      },500);
+    });
+  }); 
+});
+</script> -->
+{% endblock script %}

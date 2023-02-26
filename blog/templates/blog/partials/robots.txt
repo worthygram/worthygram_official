@@ -1,0 +1,11 @@
+User-Agent: *
+
+Disallow: /account/community/sponsor/
+Disallow: /account/community/guidelines/
+Disallow: /account/community/about/
+Disallow: /account/community/contact/
+
+Allow: /
+
+
+Sitemap: https://www.worthygram.com/sitemap.xml
